@@ -22,7 +22,7 @@ function varargout = simple_gui(varargin)
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 24-Oct-2016 11:34:10
+% Last Modified by GUIDE v2.5 26-Oct-2016 13:34:48
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -652,5 +652,14 @@ function btnExtract_Callback(hObject, eventdata, handles)
 % hObject    handle to btnExtract (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[Endpoints Bifurcations] = ExtractMinutiae(handles.Result);
+RGB = repmat(handles.Image,[1 1 3]);
+[Endpoints, Bifurcations] = ExtractMinutiae(RGB);
+red = uint8([255 0 0]);  % [R G B]; class of red must match class of I
+markerInserter = vision.MarkerInserter('Shape','Circle','BorderColor','Custom','CustomBorderColor',red);
 
+J = step(markerInserter, RGB, int32(Endpoints.'));
+%blue = uint8([0 0 255]);  % [R G B]; class of red must match class of I
+%markerInserter = vision.MarkerInserter('Shape','Circle','BorderColor','Custom','CustomBorderColor',blue);
+
+%J = step(markerInserter, RGB, int32(Bifurcations.'));
+figure,imshow(J);

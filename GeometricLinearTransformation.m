@@ -25,8 +25,8 @@ function result = GeometricLinearTransform(image , transformation)
   
   for y = 1:newHight
     for x = 1:newWidth
-      transforormedPosition = [x - 1; y - 1; 1];
-      oldPosition = int16(inverseTransformation * double(transforormedPosition));
+      transformedPosition = [x - 1; y - 1; 1];
+      oldPosition = int16(inverseTransformation * double(transformedPosition));
       oldRow = oldPosition(2) + 1;
       oldCol = oldPosition(1) + 1;
       if ((0 < oldRow) && (oldRow < hight + 1)) && ((0 < oldCol) && (oldCol < width + 1))

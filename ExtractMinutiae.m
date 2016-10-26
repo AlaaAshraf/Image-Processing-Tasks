@@ -1,13 +1,13 @@
-function [Endpoints Bifurcations] = ExtractMinutiae(Image)
+function [Endpoints, Bifurcations] = ExtractMinutiae(Image)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-[H, W, L] = size(Image);
+[H, W, L] = size(Image)
 temp = ones(H,W);
-Endpoint = zeros(H,W);
-Bifurcations = zeros(H,W);
+Endpoints=zeros(2,0);
+Bifurcations=Endpoints;
 for y=1:H
     for x=1:W
-        if Image(y,x,1)>100&&Image(y,x,2)>100&&Image(y,x,3)>100
+        if Image(y,x,1)==255&&Image(y,x,2)==255&&Image(y,x,3)==255
             temp(y,x)=0;
         end
     end
@@ -22,10 +22,10 @@ for y=2:H-1
             temp2 = sum(temp2);
             temp2=sum(temp2);
             if(temp2==1)
-                Endpoints(y,x)=1;
+                Endpoints=cat(2,Endpoints,[x;y]);
             end
             if(temp2==3)
-                Bifurcations(y,x)=1;
+                Bifurcations=cat(2,Bifurcations,[x;y]);
             end
         end
     end
