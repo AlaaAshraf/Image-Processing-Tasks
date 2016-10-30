@@ -22,7 +22,7 @@ function varargout = simple_gui(varargin)
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 26-Oct-2016 13:34:48
+% Last Modified by GUIDE v2.5 30-Oct-2016 22:30:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -663,3 +663,12 @@ J = step(markerInserter, RGB, int32(Endpoints.'));
 
 %J = step(markerInserter, RGB, int32(Bifurcations.'));
 figure,imshow(J);
+
+
+% --- Executes on button press in btnShape.
+function btnShape_Callback(hObject, eventdata, handles)
+% hObject    handle to btnShape (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[SegmentedSign, SignShape] = SegmentSign(handles.Image);
+figure,imshow(SegmentedSign);
