@@ -1,15 +1,15 @@
 function [SegmentedSign, SignShape] = SegmentSign(InputImage)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-    
+    figure,imshow(InputImage);
     %InputImage = rgb2gray(InputImage);
     h = fspecial('average', [5 5]);
     InputImage = imfilter(InputImage,h);
-    figure,imshow(InputImage);
+    %figure,imshow(InputImage);
     
     
     [centers, radii] = imfindcircles(InputImage,[100, 1000],'ObjectPolarity','dark');
-    circlesNum = size(centers)
+    circlesNum = size(centers);
     maxxR=0;
     maxxI=-1;
     for i=1:circlesNum

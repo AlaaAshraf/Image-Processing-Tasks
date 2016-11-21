@@ -22,7 +22,7 @@ function varargout = simple_gui(varargin)
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 30-Oct-2016 22:30:13
+% Last Modified by GUIDE v2.5 20-Nov-2016 02:37:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -670,5 +670,16 @@ function btnShape_Callback(hObject, eventdata, handles)
 % hObject    handle to btnShape (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
 [SegmentedSign, SignShape] = SegmentSign(handles.Image);
 figure,imshow(SegmentedSign);
+
+
+% --- Executes on button press in btnYinYang.
+function btnYinYang_Callback(hObject, eventdata, handles)
+% hObject    handle to btnYinYang (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[YinImage, YangImage] = SplitYinYang(handles.Image);
+figure, imshow(YinImage);
+figure, imshow(YangImage);
