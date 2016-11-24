@@ -675,11 +675,3 @@ function btnShape_Callback(hObject, eventdata, handles)
 figure,imshow(SegmentedSign);
 
 
-% --- Executes on button press in btnYinYang.
-function btnYinYang_Callback(hObject, eventdata, handles)
-% hObject    handle to btnYinYang (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-[YinImage, YangImage] = SplitYinYang(handles.Image);
-figure, imshow(YinImage);
-figure, imshow(YangImage);
