@@ -22,7 +22,7 @@ function varargout = YinYang(varargin)
 
 % Edit the above text to modify the response to help YinYang
 
-% Last Modified by GUIDE v2.5 23-Nov-2016 18:19:32
+% Last Modified by GUIDE v2.5 25-Nov-2016 15:17:12
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
