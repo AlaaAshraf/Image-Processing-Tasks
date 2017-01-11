@@ -10,8 +10,12 @@ result = uint8(zeros(H, W, L));
 for	y=1:H
 	for x=1:W
 		newX = x + Xoffset ;
+        newX = mod(newX, W);
+        if(newX == 0)
+           newX = W; 
+        end
 		if (newX > W)
-			newX=newX-W;
+            newX=newX-W;
         elseif(newX<1)
             newX=newX+W;
 		end

@@ -28,11 +28,12 @@ Corners(2,3)=DH;
          end
      end
  end
- 
+ initialCorners
  %W = Warp(InputImage, initialCorners, Corners);
  %AlignedImage=imwarp(InputImage,W);
- InputImage=Warp(InputImage,Corners,initialCorners);
+ InputImage=Warp2(InputImage,Corners,initialCorners);
  x=0;y=0;
+ [H, W, L] = size(InputImage);
   for Y=1:H
      for X=1:W
          if(InputImage(Y,X,1)>100)&&(InputImage(Y,X,2)<10)&&(InputImage(Y,X,3)<10)

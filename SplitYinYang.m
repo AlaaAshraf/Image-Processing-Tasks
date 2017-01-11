@@ -15,8 +15,26 @@ function [YinImage, YangImage] = SplitYinYang(InputImage)
     
     YinImage = ~bw;
     [L W] = size(bw);
-    SE = strel('disk', 3 * round(L / 260));
+    y = round(L/2);
+    counter = 1;
+    MIN = 10000000;
+    for x = 1:W
+        if(bw(y, x) == 0)
+            counter = counter + 1;
+        else
+            if(counter ~= 1)
+                MIN = min(MIN, counter);
+                counter = 1;
+            end
+        end
+    end
+    if(counter ~= 1)
+        MIN = min(MIN, counter);
+    end
+    
+    SE = strel('disk', MIN);
     YinImage = imerode(YinImage, SE);
+    YinImage = imdilate(YinImage, SE);
     [L,num] = bwlabel( YinImage );
     counts = sum(bsxfun(@eq,L(:),1:num));
     [~,ind] = max(counts);

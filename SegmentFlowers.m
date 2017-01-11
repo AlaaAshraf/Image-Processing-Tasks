@@ -4,7 +4,11 @@ function [NumberOfFlowers, NumberOfPetalsPerFlower] = SegmentFlowers(InputImage)
     NumberOfFlowers = 0;
     h = fspecial('gaussian', [3 3], 2);
     InputImage = imfilter(InputImage,h);
-    bw = im2bw(InputImage, 0.37);
+    I = graythresh(rgb2gray(InputImage));
+    bw = im2bw(InputImage, I);
+%     SE = strel('disk', 12);
+%     bw = imdilate(bw, SE);
+    % figure, imshow(bw);
     tmp = bw;
     CC = bwconncomp(bw);
     numPixels = cellfun(@numel,CC.PixelIdxList);
@@ -15,9 +19,9 @@ function [NumberOfFlowers, NumberOfPetalsPerFlower] = SegmentFlowers(InputImage)
            tmp(CC.PixelIdxList{ind}) = 0;
        end
     end
-    flowers = bw - tmp;
+    %flowers = bw - tmp;
     
-    figure, imshow(flowers);
-    NumberOfPetalsPerFlower = 5;
+    %figure, imshow(flowers);
+    NumberOfPetalsPerFlower = 1;
     
 end

@@ -22,7 +22,7 @@ function varargout = simple_gui(varargin)
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 20-Nov-2016 02:37:14
+% Last Modified by GUIDE v2.5 26-Dec-2016 08:07:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -111,6 +111,8 @@ function btnSaveImage_Callback(hObject, eventdata, handles)
 % hObject    handle to btnSaveImage (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+figure, imshow(handles.Result);
+imwrite(handles.Result, 'x.bmp');
 
 
 % --- Executes on button press in btnDisplayChannel.
@@ -323,20 +325,20 @@ end
 
 
 function scaleY_Callback(hObject, eventdata, handles)
-% hObject    handle to scaleY (see GCBO)
+% hObject    handle to scaley (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.scaleY = str2double(get(hObject,'String'));
 
 % Save the handles structure.
 guidata(hObject, handles);
-% Hints: get(hObject,'String') returns contents of scaleY as text
-%        str2double(get(hObject,'String')) returns contents of scaleY as a double
+% Hints: get(hObject,'String') returns contents of scaley as text
+%        str2double(get(hObject,'String')) returns contents of scaley as a double
 
 
 % --- Executes during object creation, after setting all properties.
 function scaleY_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to scaleY (see GCBO)
+% hObject    handle to scaley (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 handles.scaleY = str2double(get(hObject,'String'));
@@ -349,15 +351,11 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-
-
-
-
 function rotationAngle_Callback(hObject, eventdata, handles)
 % hObject    handle to rotationAngle (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.rotateAngle = str2num(get(hObject,'String'));
+handles.rotationAngle = str2double(get(hObject,'String'));
 
 % Save the handles structure.
 guidata(hObject, handles);
@@ -370,7 +368,7 @@ function rotationAngle_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to rotationAngle (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-handles.rotateAngle = str2num(get(hObject,'String'));
+handles.rotationAngle = str2double(get(hObject,'String'));
 
 % Save the handles structure.
 guidata(hObject, handles);
@@ -385,12 +383,12 @@ end
 
 
 function shearX_Callback(hObject, eventdata, handles)
-% hObject    handle to shearX (see GCBO)
+% hObject    handle to shearx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of shearX as text
-%        str2double(get(hObject,'String')) returns contents of shearX as a double
+% Hints: get(hObject,'String') returns contents of shearx as text
+%        str2double(get(hObject,'String')) returns contents of shearx as a double
 handles.shearX = str2num(get(hObject,'String'));
 
 % Save the handles structure.
@@ -399,7 +397,7 @@ guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
 function shearX_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to shearX (see GCBO)
+% hObject    handle to shearx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 handles.shearX = str2num(get(hObject,'String'));
@@ -415,20 +413,20 @@ end
 
 
 function shearY_Callback(hObject, eventdata, handles)
-% hObject    handle to shearY (see GCBO)
+% hObject    handle to sheary (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.shearY = str2num(get(hObject,'String'));
 
 % Save the handles structure.
 guidata(hObject, handles);
-% Hints: get(hObject,'String') returns contents of shearY as text
-%        str2double(get(hObject,'String')) returns contents of shearY as a double
+% Hints: get(hObject,'String') returns contents of sheary as text
+%        str2double(get(hObject,'String')) returns contents of sheary as a double
 
 
 % --- Executes during object creation, after setting all properties.
 function shearY_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to shearY (see GCBO)
+% hObject    handle to sheary (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 handles.shearY = str2num(get(hObject,'String'));
@@ -447,16 +445,24 @@ function btnTransform_Callback(hObject, eventdata, handles)
 % hObject    handle to btnTransform (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-Scale = [handles.scaleX,0,0; 0,handles.scaleY,0; 0,0,1];
-Rotate = [cosd(handles.rotateAngle),sind(handles.rotateAngle),0;-sind(handles.rotateAngle),cosd(handles.rotateAngle),0;0,0,1];
-Shear = [1,handles.shearY,0;handles.shearX,1,0;0,0,1];
-W=Shear*Rotate*Scale;
-handles.Result = GeometricLinearTransformation(handles.Image, W);
+
+X = handles.scaleX;
+Y = handles.scaleY;
+Scale = [X, 0, 0; 0, Y, 0; 0, 0, 1];
+
+Angle = handles.rotationAngle;
+Rotate = [cosd(Angle),sind(Angle),0;-sind(Angle),cosd(Angle),0;0,0,1];
+
+X = handles.shearX;
+Y = handles.shearY;
+Shear = [1,Y,0;X,1,0;0,0,1];
+%W=Shear*Rotate*Scale;
+W = Scale*Rotate*Shear;
+handles.Result = GeometricLinearTransform(handles.Image, W);
 
 % Set current drawing axes to "axes2"
 axes(handles.axes2);
-imshow(handles.Result);
-figure,imshow(handles.Result);
+figure,imshow(handles.Result), hold on;
 % Save the handles structure.
 guidata(hObject, handles);
 
@@ -641,7 +647,7 @@ handles.Result = Align(handles.Image, handles.desiredWidth, handles.desiredHeigh
 % Set current drawing axes to "axes2"
 axes(handles.axes2);
 imshow(handles.Result);
-size(handles.Result)
+size(handles.Result);
 figure,imshow(handles.Result);
 % Save the handles structure.
 guidata(hObject, handles);
@@ -652,26 +658,96 @@ function btnExtract_Callback(hObject, eventdata, handles)
 % hObject    handle to btnExtract (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-RGB = repmat(handles.Image,[1 1 3]);
-[Endpoints, Bifurcations] = ExtractMinutiae(RGB);
-red = uint8([255 0 0]);  % [R G B]; class of red must match class of I
-markerInserter = vision.MarkerInserter('Shape','Circle','BorderColor','Custom','CustomBorderColor',red);
+%RGB = repmat(handles.Image,[1 1 3]);
+%figure, imshow(handles.Image), hold on;
+[Endpoints, Bifurcations] = ExtractMinutiae(imread('finger2.bmp'));
 
-J = step(markerInserter, RGB, int32(Endpoints.'));
-%blue = uint8([0 0 255]);  % [R G B]; class of red must match class of I
-%markerInserter = vision.MarkerInserter('Shape','Circle','BorderColor','Custom','CustomBorderColor',blue);
-
-%J = step(markerInserter, RGB, int32(Bifurcations.'));
-figure,imshow(J);
-
-
-% --- Executes on button press in btnShape.
-function btnShape_Callback(hObject, eventdata, handles)
-% hObject    handle to btnShape (see GCBO)
+function edit13_Callback(hObject, eventdata, handles)
+% hObject    handle to edit13 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-[SegmentedSign, SignShape] = SegmentSign(handles.Image);
-figure,imshow(SegmentedSign);
+% Hints: get(hObject,'String') returns contents of edit13 as text
+%        str2double(get(hObject,'String')) returns contents of edit13 as a double
 
 
+% --- Executes during object creation, after setting all properties.
+function edit13_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ScaleY_Callback(hObject, eventdata, handles)
+% hObject    handle to scaleY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of scaleY as text
+%        str2double(get(hObject,'String')) returns contents of scaleY as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ScaleY_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to scaleY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ShearY_Callback(hObject, eventdata, handles)
+% hObject    handle to shearY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of shearY as text
+%        str2double(get(hObject,'String')) returns contents of shearY as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ShearY_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to shearY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ShearX_Callback(hObject, eventdata, handles)
+% hObject    handle to shearX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of shearX as text
+%        str2double(get(hObject,'String')) returns contents of shearX as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ShearX_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to shearX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
